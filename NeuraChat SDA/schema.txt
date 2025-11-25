@@ -1,0 +1,121 @@
+CREATE TABLE public.ai_agent_sessions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  title text,
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT ai_agent_sessions_pkey PRIMARY KEY (id),
+  CONSTRAINT ai_agent_sessions_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.ai_interactions (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  session_id uuid NOT NULL,
+  user_query text NOT NULL,
+  ai_response text NOT NULL,
+  intent text CHECK (intent = ANY (ARRAY['info'::text, 'writing'::text, 'productivity'::text])),
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT ai_interactions_pkey PRIMARY KEY (id),
+  CONSTRAINT ai_interactions_session_id_fkey FOREIGN KEY (session_id) REFERENCES public.ai_agent_sessions(id)
+);
+CREATE TABLE public.call_logs (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  call_id uuid NOT NULL UNIQUE,
+  quality_rating text,
+  duration_seconds integer,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT call_logs_pkey PRIMARY KEY (id),
+  CONSTRAINT call_logs_call_id_fkey FOREIGN KEY (call_id) REFERENCES public.calls(id)
+);
+CREATE TABLE public.call_participants (
+  call_id uuid NOT NULL,
+  user_id uuid NOT NULL,
+  status text DEFAULT 'connecting'::text CHECK (status = ANY (ARRAY['connecting'::text, 'connected'::text, 'left'::text, 'rejected'::text])),
+  joined_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT call_participants_pkey PRIMARY KEY (call_id, user_id),
+  CONSTRAINT call_participants_call_id_fkey FOREIGN KEY (call_id) REFERENCES public.calls(id),
+  CONSTRAINT call_participants_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.calls (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  chat_id uuid NOT NULL,
+  initiator_id uuid NOT NULL,
+  status text DEFAULT 'active'::text CHECK (status = ANY (ARRAY['active'::text, 'ended'::text])),
+  type text DEFAULT 'audio'::text CHECK (type = ANY (ARRAY['audio'::text, 'video'::text])),
+  start_time timestamp with time zone DEFAULT now(),
+  end_time timestamp with time zone,
+  CONSTRAINT calls_pkey PRIMARY KEY (id),
+  CONSTRAINT calls_chat_id_fkey FOREIGN KEY (chat_id) REFERENCES public.chats(id),
+  CONSTRAINT calls_initiator_id_fkey FOREIGN KEY (initiator_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.chat_participants (
+  chat_id uuid NOT NULL,
+  user_id uuid NOT NULL,
+  role text DEFAULT 'member'::text CHECK (role = ANY (ARRAY['admin'::text, 'member'::text])),
+  joined_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT chat_participants_pkey PRIMARY KEY (chat_id, user_id),
+  CONSTRAINT chat_participants_chat_id_fkey FOREIGN KEY (chat_id) REFERENCES public.chats(id),
+  CONSTRAINT chat_participants_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.chats (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  type text NOT NULL CHECK (type = ANY (ARRAY['private'::text, 'group'::text])),
+  name text,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT chats_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.encryption_keys (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  identity_key text NOT NULL,
+  signed_pre_key text NOT NULL,
+  one_time_pre_keys jsonb,
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT encryption_keys_pkey PRIMARY KEY (id),
+  CONSTRAINT encryption_keys_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.media_files (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  message_id uuid NOT NULL,
+  file_url text NOT NULL,
+  file_type text,
+  file_size integer,
+  uploaded_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT media_files_pkey PRIMARY KEY (id),
+  CONSTRAINT media_files_message_id_fkey FOREIGN KEY (message_id) REFERENCES public.messages(id)
+);
+CREATE TABLE public.messages (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  chat_id uuid NOT NULL,
+  sender_id uuid NOT NULL,
+  content text NOT NULL,
+  type text DEFAULT 'text'::text CHECK (type = ANY (ARRAY['text'::text, 'media'::text, 'system'::text])),
+  status text DEFAULT 'sent'::text CHECK (status = ANY (ARRAY['sent'::text, 'delivered'::text, 'read'::text])),
+  created_at timestamp with time zone DEFAULT now(),
+  updated_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT messages_pkey PRIMARY KEY (id),
+  CONSTRAINT messages_chat_id_fkey FOREIGN KEY (chat_id) REFERENCES public.chats(id),
+  CONSTRAINT messages_sender_id_fkey FOREIGN KEY (sender_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.notifications (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  title text NOT NULL,
+  content text,
+  type text CHECK (type = ANY (ARRAY['message'::text, 'call'::text, 'system'::text])),
+  is_read boolean DEFAULT false,
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT notifications_pkey PRIMARY KEY (id),
+  CONSTRAINT notifications_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id)
+);
+CREATE TABLE public.users (
+  id uuid NOT NULL,
+  email text,
+  username text UNIQUE,
+  full_name text,
+  avatar_url text,
+  status_message text,
+  last_seen timestamp with time zone DEFAULT now(),
+  created_at timestamp with time zone DEFAULT now(),
+  CONSTRAINT users_pkey PRIMARY KEY (id),
+  CONSTRAINT users_id_fkey FOREIGN KEY (id) REFERENCES auth.users(id)
+);
