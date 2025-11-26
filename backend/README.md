@@ -2,8 +2,8 @@
 
 A comprehensive REST API for the NeuraChat messaging platform with end-to-end encryption support.
 
-**Note**: Voice/video call functionality is yet to be implemented.  
-**Note**: AI agent functionality is yet to be implemented.  
+**Note**: Voice/video call functionality is yet to be implemented.
+**Note**: AI agent functionality is yet to be implemented.
 **Note**: Notification functionality is yet to be implemented.
 
 ## Tech Stack
@@ -225,15 +225,16 @@ GET /api/chats/:chatId
 
 #### Send Message
 
-```http
-POST /api/messages/:chatId
+**Note**: Sending messages is done via Socket.IO only (see WebSocket Events section below)
 
-Content-Type: application/json
-
-{
-  "content": "Hello, World!",
-  "type": "text"
-}
+Use Socket.IO to send messages:
+```javascript
+socket.emit('send-message', {
+  chat_id: 'chat-123',
+  sender_id: 'user-456',
+  content: 'Hello, World!',
+  type: 'text'
+});
 ```
 
 #### Get Chat Messages
@@ -253,6 +254,13 @@ Content-Type: application/json
 {
   "content": "Updated message"
 }
+```
+
+#### Delete Message
+
+```http
+DELETE /api/messages/:messageId
+
 ```
 
 ### Call Endpoints
@@ -288,6 +296,7 @@ Status Code: `501 Not Implemented`
 **Note**: Notification functionality is yet to be implemented.
 
 All notification endpoints will return:
+
 ```json
 {
   "error": "Notification functionality yet to be implemented"
@@ -295,6 +304,96 @@ All notification endpoints will return:
 ```
 
 Status Code: `501 Not Implemented`
+
+## Messaging Architecture
+
+NeuraChat uses **Socket.IO for sending messages** with database persistence for optimal real-time messaging:
+
+### How It Works
+
+```
+┌──────────────┐
+│   Client     │
+└──────┬───────┘
+       │
+       ├──► REST API (HTTP)
+       │    - Fetch message history
+       │    - Edit/Delete messages
+       │    - User/Chat management
+       │
+       └──► Socket.IO (WebSocket)
+            - Send messages (saves to DB + broadcasts)
+            - Real-time message updates
+            - Typing indicators
+```
+
+**Key Features:**
+
+- ✅ **Socket.IO for Sending**: All new messages sent via WebSocket only
+- ✅ **Database Persistence**: Messages automatically saved to Supabase
+- ✅ **Real-time Broadcasts**: All chat participants receive messages instantly
+- ✅ **Authentication Enforced**: WebSocket validates chat participation
+- ✅ **Message History**: Retrieve past messages via REST API
+
+### Sending Messages (Socket.IO Only)
+
+To send a new message, use Socket.IO:
+
+```javascript
+// Connect to Socket.IO
+const socket = io('http://localhost:5000');
+
+// Join the chat room
+socket.emit('join-chat', 'chat-123');
+
+// Send message via Socket.IO
+socket.emit('send-message', {
+  chat_id: 'chat-123',
+  sender_id: 'user-456',
+  content: 'Hello!',
+  type: 'text'
+});
+// ✅ Authenticates sender
+// ✅ Saves to database
+// ✅ Broadcasts to all chat participants
+```
+
+### Why Socket.IO Only for Sending?
+
+- **Simpler Architecture**: One path for sending messages
+- **Real-time by Design**: WebSocket is built for instant communication
+- **Lower Latency**: No HTTP overhead for message delivery
+- **Consistent Flow**: All real-time features use Socket.IO
+
+### REST API for Everything Else
+
+REST API handles non-real-time operations:
+
+```javascript
+// Fetch message history (REST)
+const messages = await fetch('http://localhost:5000/api/messages/chat-123?limit=50', {
+  credentials: 'include'
+});
+
+// Edit a message (REST)
+await fetch('http://localhost:5000/api/messages/msg-123', {
+  method: 'PUT',
+  credentials: 'include',
+  body: JSON.stringify({ content: 'Updated message' })
+});
+// ✅ Updates database
+// ✅ Emits 'message-updated' via Socket.IO
+
+// Delete a message (REST)
+await fetch('http://localhost:5000/api/messages/msg-123', {
+  method: 'DELETE',
+  credentials: 'include'
+});
+// ✅ Removes from database
+// ✅ Emits 'message-deleted' via Socket.IO
+```
+
+**Result:** Clean separation - Socket.IO for sending, REST for everything else!
 
 ## WebSocket Events (Socket.IO)
 
@@ -305,26 +404,29 @@ The server supports real-time communication via Socket.IO on the same port as th
 ### Client Events (Emit from client)
 
 
-| Event          | Payload                               | Description                                 |
-| -------------- | ------------------------------------- | ------------------------------------------- |
-| `join`         | `{ userId: string }`                  | Join user's personal room for notifications |
-| `join-chat`    | `{ chatId: string }`                  | Join a specific chat room                   |
-| `typing`       | `{ chatId: string, userId: string }`  | Broadcast typing indicator                  |
-| `stop-typing`  | `{ chatId: string, userId: string }`  | Stop typing indicator                       |
-| `send-message` | `{ chat_id: string, ...messageData }` | Send new message to chat                    |
+| Event          | Payload                                                                 | Description                                    |
+| -------------- | ----------------------------------------------------------------------- | ---------------------------------------------- |
+| `join`         | `{ userId: string }`                                                    | Join user's personal room for notifications    |
+| `join-chat`    | `{ chatId: string }`                                                    | Join a specific chat room                      |
+| `typing`       | `{ chatId: string, userId: string }`                                    | Broadcast typing indicator                     |
+| `stop-typing`  | `{ chatId: string, userId: string }`                                    | Stop typing indicator                          |
+| `send-message` | `{ chat_id: string, sender_id: string, content: string, type: string }` | Send new message (authenticates & saves to DB) |
 
 **Note**: Call/Video functionality (call-user, answer-call, ice-candidate, end-call events) - Yet to be implemented
 
 ### Server Events (Listen on client)
 
 
-| Event              | Payload                              | Description                    |
-| ------------------ | ------------------------------------ | ------------------------------ |
-| `connection`       | `{ id: string }`                     | Socket connected successfully  |
-| `new-message`      | `{ ...messageData }`                 | New message in subscribed chat |
-| `user-typing`      | `{ userId: string, chatId: string }` | User started typing            |
-| `user-stop-typing` | `{ userId: string, chatId: string }` | User stopped typing            |
-| `disconnect`       | `{}`                                 | Socket disconnected            |
+| Event              | Payload                                                  | Description                                      |
+| ------------------ | -------------------------------------------------------- | ------------------------------------------------ |
+| `connection`       | `{ id: string }`                                         | Socket connected successfully                    |
+| `new-message`      | `{ id, chat_id, sender_id, content, users: {...}, ... }` | New message received (from REST or Socket.IO)    |
+| `message-updated`  | `{ id, chat_id, content, updated_at }`                   | Message was edited                               |
+| `message-deleted`  | `{ messageId: string }`                                  | Message was deleted                              |
+| `user-typing`      | `{ userId: string, chatId: string }`                     | User started typing                              |
+| `user-stop-typing` | `{ userId: string, chatId: string }`                     | User stopped typing                              |
+| `error`            | `{ message: string }`                                    | Error occurred (e.g., unauthorized, not in chat) |
+| `disconnect`       | `{}`                                                     | Socket disconnected                              |
 
 **Note**: Call/Video server events (incoming-call, call-answered, ice-candidate, call-ended) - Yet to be implemented
 
@@ -343,9 +445,33 @@ socket.emit('join', 'user-123');
 // Join chat room
 socket.emit('join-chat', 'chat-456');
 
-// Listen for new messages
+// Listen for new messages (from REST API or Socket.IO)
 socket.on('new-message', (message) => {
   console.log('New message:', message);
+  // message includes: { id, chat_id, sender_id, content, type, status, users: { username, full_name, avatar_url }, created_at, updated_at }
+});
+
+// Listen for message updates
+socket.on('message-updated', (message) => {
+  console.log('Message edited:', message);
+});
+
+// Listen for message deletions
+socket.on('message-deleted', ({ messageId }) => {
+  console.log('Message deleted:', messageId);
+});
+
+// Listen for errors
+socket.on('error', ({ message }) => {
+  console.error('Socket error:', message);
+});
+
+// Send message via Socket.IO (also saves to database)
+socket.emit('send-message', {
+  chat_id: 'chat-456',
+  sender_id: 'user-123',
+  content: 'Hello!',
+  type: 'text'
 });
 
 // Send typing indicator
@@ -678,172 +804,3 @@ router.get('/feature/:id', authenticateToken, getFeature);
 import featureRoutes from './routes/featureRoutes';
 app.use('/api/features', featureRoutes);
 ```
-
-### Testing
-
-Currently no automated tests are configured. Recommended testing tools:
-
-- **Unit Tests**: Jest + ts-jest
-- **Integration Tests**: Supertest
-- **E2E Tests**: Postman/Insomnia collections
-- **API Testing**: Thunder Client (VS Code extension)
-
-### Debugging
-
-1. **Console Logs**: All major operations log to console
-2. **Error Messages**: Detailed errors in development mode
-3. **VS Code Debugger**: Attach to ts-node process
-4. **Source Maps**: Enabled for debugging TypeScript
-
-### Performance Considerations
-
-- **Database Singleton**: Single Supabase client instance prevents connection overhead
-- **Cookie-based Auth**: Reduces token validation overhead vs header parsing
-- **TypeScript**: Compiled to optimized JavaScript for production
-- **Connection Pooling**: Handled by Supabase client
-- **Lazy Loading**: Controllers only get DB client when functions execute
-
-## Deployment
-
-### Production Checklist
-
-Before deploying to production:
-
-- [ ]  Set strong `JWT_SECRET` (minimum 32 random characters)
-- [ ]  Configure `NODE_ENV=production`
-- [ ]  Set up proper `FRONTEND_URL` for CORS
-- [ ]  Enable Supabase Row Level Security (RLS) policies
-- [ ]  Use environment-specific Supabase projects
-- [ ]  Enable HTTPS/SSL certificates
-- [ ]  Set up monitoring and logging
-- [ ]  Configure rate limiting (recommended: express-rate-limit)
-- [ ]  Set up backup strategy for database
-- [ ]  Review and test all API endpoints
-
-### Environment Variables for Production
-
-```env
-NODE_ENV=production
-PORT=5000
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your_production_anon_key
-JWT_SECRET=your_very_long_random_secret_key_here
-JWT_EXPIRES_IN=7d
-FRONTEND_URL=https://yourdomain.com
-```
-
-### Build and Deploy
-
-```bash
-# Install dependencies
-npm install --production
-
-# Build TypeScript
-npm run build
-
-# Start production server
-npm start
-```
-
-### Deployment Platforms
-
-**Recommended platforms:**
-
-- **Railway**: Easy deployment with automatic SSL
-- **Render**: Free tier available, auto-deploys from Git
-- **Heroku**: Simple setup with buildpacks
-- **DigitalOcean App Platform**: Scalable with managed databases
-- **AWS EC2/ECS**: Full control, requires more setup
-- **Vercel/Netlify**: Serverless functions (requires adaptation)
-
-### Docker Deployment (Optional)
-
-```dockerfile
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install --production
-
-COPY . .
-RUN npm run build
-
-EXPOSE 5000
-
-CMD ["npm", "start"]
-```
-
-## Troubleshooting
-
-### Common Issues
-
-**1. "Database not initialized" error**
-
-- **Cause**: Database client called before initialization
-- **Solution**: Ensure `initializeDatabase()` is called in `server.ts` before importing controllers
-
-**2. "Cannot find module" errors**
-
-- **Cause**: Missing `.js` extensions or wrong module type
-- **Solution**: We use CommonJS (no `"type": "module"` in package.json), imports should not have `.js` extensions
-
-**3. "Invalid token" or "No token provided"**
-
-- **Cause**: Cookie not being sent with requests
-- **Solution**: Ensure client sends `credentials: 'include'` or `withCredentials: true`
-
-**4. CORS errors in browser**
-
-- **Cause**: Frontend URL not whitelisted or credentials not configured
-- **Solution**: Check `FRONTEND_URL` in `.env` and ensure CORS credentials are enabled
-
-**5. "Supabase configuration missing"**
-
-- **Cause**: `.env` file not found or missing required variables
-- **Solution**: Copy `.env.example` to `.env` and fill in all values
-
-**6. WebSocket connection fails**
-
-- **Cause**: Socket.IO CORS not configured or wrong URL
-- **Solution**: Ensure Socket.IO CORS matches your frontend URL
-
-**7. TypeScript compilation errors**
-
-- **Cause**: Type mismatches or missing type definitions
-- **Solution**: Run `npm install` to ensure all @types packages are installed
-
-### Debug Mode
-
-Enable verbose logging:
-
-```typescript
-// In src/server.ts, add:
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`, {
-    body: req.body,
-    cookies: req.cookies,
-    headers: req.headers
-  });
-  next();
-});
-```
-
-### Logs to Check
-
-- **Server startup**: Confirms database connection and server running
-- **Request logs**: Shows incoming requests and their paths
-- **Error logs**: Displays caught errors with stack traces (dev mode)
-- **Socket.IO logs**: Shows WebSocket connections and events
-
-## Contributing
-
-When contributing to this project:
-
-1. Follow existing code structure and patterns
-2. Use TypeScript types (not interfaces)
-3. Add authentication middleware to protected routes
-4. Use `getSupabaseClient()` inside controller functions
-5. Handle errors appropriately with proper status codes
-6. Update README.md if adding new features
-7. Test endpoints before committing

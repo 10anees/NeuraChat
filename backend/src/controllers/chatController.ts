@@ -38,11 +38,14 @@ export const createChat = async (req: AuthRequest, res: Response): Promise<void>
     }
 
     // Add participants (including creator)
-    const allParticipants = [...new Set([userId, ...participants])];
+    // Creator is always admin, remove creator from participants list if present
+    const otherParticipants = participants.filter((p: string) => p !== userId);
+    const allParticipants = [userId, ...otherParticipants];
+    
     const participantsData = allParticipants.map((participantId, index) => ({
       chat_id: chatData.id,
       user_id: participantId,
-      role: index === 0 ? 'admin' : 'member', // Creator is admin
+      role: index === 0 ? 'admin' : 'member', // First is always creator (admin)
     }));
 
     const { error: participantsError } = await supabase

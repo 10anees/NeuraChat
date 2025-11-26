@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "NeuraChat API",
-    "description": "Complete API collection for NeuraChat backend",
+    "description": "Complete API collection for NeuraChat backend with Socket.IO-based messaging.\n\n🚀 Features:\n- Cookie-based JWT authentication\n- Real-time messaging via Socket.IO (send messages)\n- REST API for message history, edits, deletes\n- Database persistence for all messages\n\n📝 Setup:\n1. Import this collection into Postman\n2. Set baseUrl variable to http://localhost:5000\n3. Register a user\n4. Login (automatically stores cookie)\n5. All subsequent requests use the cookie automatically\n\n� Sending Messages:\nMessages are sent ONLY via Socket.IO:\n1. Create new WebSocket request in Postman\n2. Connect to: ws://localhost:5000\n3. Emit: socket.emit('send-message', { chat_id, sender_id, content, type })\n4. Listen for: 'new-message' event\n\n📥 Fetching/Editing Messages:\nUse REST API endpoints in this collection.\n\nNote: Call/AI/Notification features are not yet implemented (501 status).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -29,6 +29,7 @@
   "item": [
     {
       "name": "Authentication",
+      "description": "User registration, login, and authentication using cookie-based JWT tokens.\n\n🍪 Cookie-Based Auth:\n- JWT token stored in httpOnly cookie (secure, prevents XSS)\n- Automatically included in all requests\n- No need to manually set Authorization headers\n\n🔐 Security:\n- Passwords hashed with bcrypt\n- Supabase Auth handles authentication\n- Database trigger auto-creates user profile\n\n📝 Usage:\n1. Register new user\n2. Login (cookie set automatically)\n3. All subsequent requests authenticated via cookie",
       "item": [
         {
           "name": "Register",
@@ -48,7 +49,8 @@
               "raw": "{{baseUrl}}/api/auth/register",
               "host": ["{{baseUrl}}"],
               "path": ["api", "auth", "register"]
-            }
+            },
+            "description": "Register a new user account.\n\n✅ Creates Supabase Auth user\n✅ Database trigger auto-creates profile\n✅ Sets JWT cookie automatically\n✅ Returns user data\n\nNote: Email confirmation is disabled for testing."
           }
         },
         {
@@ -281,49 +283,8 @@
     },
     {
       "name": "Messages",
+      "description": "Retrieve, edit, and delete messages. Messages are SENT via Socket.IO only.\n\n💡 Architecture:\n- Socket.IO: Send new messages (saves to DB + broadcasts)\n- REST API: Fetch history, edit, delete messages\n\n📨 Send Message (Socket.IO Only):\n```javascript\nsocket.emit('send-message', {\n  chat_id: 'chat-123',\n  sender_id: 'user-456',\n  content: 'Hello!',\n  type: 'text'\n});\n// → Authenticates sender\n// → Saves to Supabase database\n// → Broadcasts to all chat participants\n```\n\n📥 Fetch Messages (REST):\nGET /api/messages/:chatId - Retrieve message history\n\n✏️ Edit/Delete (REST):\nPUT/DELETE - Also broadcast real-time updates via Socket.IO",
       "item": [
-        {
-          "name": "Send Text Message",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"content\": \"Hello! This is my first message\",\n  \"type\": \"text\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/messages/{{chatId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "messages", "{{chatId}}"]
-            }
-          }
-        },
-        {
-          "name": "Send File Message",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"content\": \"Check out this file\",\n  \"type\": \"file\",\n  \"file_url\": \"https://example.com/document.pdf\",\n  \"file_name\": \"document.pdf\",\n  \"file_size\": 1024000\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/api/messages/{{chatId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "messages", "{{chatId}}"]
-            }
-          }
-        },
         {
           "name": "Get Chat Messages",
           "request": {
@@ -336,14 +297,17 @@
               "query": [
                 {
                   "key": "limit",
-                  "value": "50"
+                  "value": "50",
+                  "description": "Number of messages to retrieve (max 100)"
                 },
                 {
                   "key": "offset",
-                  "value": "0"
+                  "value": "0",
+                  "description": "Pagination offset (for infinite scroll)"
                 }
               ]
-            }
+            },
+            "description": "Retrieve message history for a chat.\n\nReturns messages in reverse chronological order (newest first) with:\n- Full message details\n- Sender information (username, avatar, etc.)\n- Pagination support\n\nUse this on initial chat load or when fetching older messages."
           }
         },
         {
@@ -364,7 +328,8 @@
               "raw": "{{baseUrl}}/api/messages/{{messageId}}",
               "host": ["{{baseUrl}}"],
               "path": ["api", "messages", "{{messageId}}"]
-            }
+            },
+            "description": "Edit a message you sent.\n\n✅ Updates database\n✅ Emits 'message-updated' event via Socket.IO\n✅ All users see the edit in real-time\n\nRestrictions:\n- Only message sender can edit\n- Can only edit text content"
           }
         },
         {
@@ -376,7 +341,8 @@
               "raw": "{{baseUrl}}/api/messages/{{messageId}}",
               "host": ["{{baseUrl}}"],
               "path": ["api", "messages", "{{messageId}}"]
-            }
+            },
+            "description": "Delete a message you sent.\n\n✅ Removes from database\n✅ Emits 'message-deleted' event via Socket.IO\n✅ All users see the deletion in real-time\n\nRestrictions:\n- Only message sender can delete\n- Also deletes associated media files"
           }
         },
         {
@@ -397,7 +363,8 @@
               "raw": "{{baseUrl}}/api/messages/{{messageId}}/reactions",
               "host": ["{{baseUrl}}"],
               "path": ["api", "messages", "{{messageId}}", "reactions"]
-            }
+            },
+            "description": "Add an emoji reaction to a message.\n\nNote: Reaction functionality may need to be implemented in the backend."
           }
         }
       ]

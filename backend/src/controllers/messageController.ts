@@ -1,56 +1,14 @@
 import { Request, Response } from 'express';
 import { getSupabaseClient } from '../config/database';
+import { io } from '../server';
 
 
 type AuthRequest = Request & {
   userId?: string;
 };
 
-// Send a message
-export const sendMessage = async (req: AuthRequest, res: Response): Promise<void> => {
-  try {
-    const supabase = getSupabaseClient();
-    const { chatId } = req.params;
-    const { content, type = 'text' } = req.body;
-    const userId = req.userId;
-
-    // Verify user is a participant
-    const { data: participant, error: participantError } = await supabase
-      .from('chat_participants')
-      .select('chat_id')
-      .eq('chat_id', chatId)
-      .eq('user_id', userId)
-      .single();
-
-    if (participantError || !participant) {
-      res.status(403).json({ error: 'You are not a participant of this chat' });
-      return;
-    }
-
-    // Create message
-    const { data, error } = await supabase
-      .from('messages')
-      .insert({
-        chat_id: chatId,
-        sender_id: userId,
-        content,
-        type,
-        status: 'sent',
-      })
-      .select()
-      .single();
-
-    if (error) {
-      res.status(400).json({ error: error.message });
-      return;
-    }
-
-    res.status(201).json({ message: 'Message sent successfully', data });
-  } catch (error) {
-    console.error('Send message error:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-};
+// Note: Send message functionality moved to Socket.IO only (see server.ts)
+// Messages are sent via socket.emit('send-message') for real-time communication
 
 // Get chat messages
 export const getChatMessages = async (req: AuthRequest, res: Response): Promise<void> => {
@@ -181,6 +139,13 @@ export const deleteMessage = async (req: AuthRequest, res: Response): Promise<vo
       return;
     }
 
+    // Get chat_id before deleting
+    const { data: messageDetails } = await supabase
+      .from('messages')
+      .select('chat_id')
+      .eq('id', messageId)
+      .single();
+
     const { error } = await supabase
       .from('messages')
       .delete()
@@ -189,6 +154,11 @@ export const deleteMessage = async (req: AuthRequest, res: Response): Promise<vo
     if (error) {
       res.status(400).json({ error: error.message });
       return;
+    }
+
+    // Emit delete event to all users in the chat room via Socket.IO
+    if (messageDetails) {
+      io.to(`chat:${messageDetails.chat_id}`).emit('message-deleted', { messageId });
     }
 
     res.json({ message: 'Message deleted successfully' });
@@ -231,12 +201,25 @@ export const editMessage = async (req: AuthRequest, res: Response): Promise<void
         updated_at: new Date().toISOString(),
       })
       .eq('id', messageId)
-      .select()
+      .select('*, users(id, username, full_name, avatar_url)')
       .single();
 
     if (error) {
       res.status(400).json({ error: error.message });
       return;
+    }
+
+    // Emit update to all users in the chat room via Socket.IO
+    if (data) {
+      const { data: messageDetails } = await supabase
+        .from('messages')
+        .select('chat_id')
+        .eq('id', messageId)
+        .single();
+      
+      if (messageDetails) {
+        io.to(`chat:${messageDetails.chat_id}`).emit('message-updated', data);
+      }
     }
 
     res.json({ message: 'Message updated successfully', data });

@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import {
-  sendMessage,
   getChatMessages,
   updateMessageStatus,
   deleteMessage,
@@ -14,7 +13,7 @@ const router = Router();
 // All routes require authentication
 router.use(authenticateToken);
 
-router.post('/:chatId', sendMessage);
+// Note: Send message endpoint removed - use Socket.IO emit('send-message') instead
 router.get('/:chatId', getChatMessages);
 router.put('/:messageId/status', updateMessageStatus);
 router.delete('/:messageId', deleteMessage);

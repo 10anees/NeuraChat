@@ -100,9 +100,52 @@ io.on('connection', (socket) => {
     socket.to(`chat:${chatId}`).emit('user-stop-typing', { userId, chatId });
   });
 
-  // Handle new message
-  socket.on('send-message', (message) => {
-    socket.to(`chat:${message.chat_id}`).emit('new-message', message);
+  // Handle new message via Socket.IO (saves to DB + broadcasts)
+  socket.on('send-message', async (messageData) => {
+    try {
+      const { getSupabaseClient } = await import('./config/database');
+      const supabase = getSupabaseClient();
+      
+      const { chat_id, sender_id, content, type = 'text' } = messageData;
+
+      // Verify user is a participant
+      const { data: participant } = await supabase
+        .from('chat_participants')
+        .select('chat_id')
+        .eq('chat_id', chat_id)
+        .eq('user_id', sender_id)
+        .single();
+
+      if (!participant) {
+        socket.emit('error', { message: 'You are not a participant of this chat' });
+        return;
+      }
+
+      // Save message to database
+      const { data, error } = await supabase
+        .from('messages')
+        .insert({
+          chat_id,
+          sender_id,
+          content,
+          type,
+          status: 'sent',
+        })
+        .select('*, users(id, username, full_name, avatar_url)')
+        .single();
+
+      if (error) {
+        socket.emit('error', { message: error.message });
+        return;
+      }
+
+      // Broadcast to all users in the chat room (including sender)
+      io.to(`chat:${chat_id}`).emit('new-message', data);
+      
+    } catch (error) {
+      console.error('Socket send message error:', error);
+      socket.emit('error', { message: 'Failed to send message' });
+    }
   });
 
   // Call/Video functionality - Yet to be implemented
