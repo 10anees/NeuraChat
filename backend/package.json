@@ -39,7 +39,6 @@
     "langchain": "^1.1.4",
     "mime-types": "^3.0.2",
     "multer": "^1.4.5-lts.1",
-    "openai": "^6.9.1",
     "socket.io": "^4.6.1",
     "typescript": "^5.3.3",
     "uuid": "^9.0.1",

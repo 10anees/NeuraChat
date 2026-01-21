@@ -1,6 +1,5 @@
 import { AIProvider, AIOptions } from './interfaces/AIProvider';
 import { OllamaAdapter } from './adapters/OllamaAdapter';
-import { HuggingFaceAdapter } from './adapters/HuggingFaceAdapter';
 import { GeminiAdapter } from './adapters/GeminiAdapter';
 import { SYSTEM_PROMPTS, getTranslationPrompt } from './config/prompts';
 
@@ -13,7 +12,6 @@ export class AIService {
     this.adapters = new Map();
 
     this.adapters.set('ollama', new OllamaAdapter());
-    this.adapters.set('huggingface', new HuggingFaceAdapter());
     this.adapters.set('gemini', new GeminiAdapter());
 
     console.log('[NeuraChat] AI Service initialized with multi-provider support.');

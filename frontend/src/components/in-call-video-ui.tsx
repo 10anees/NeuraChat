@@ -316,13 +316,13 @@ export const InCallVideoUI: React.FC<InCallVideoUIProps> = ({
           {!hasRemoteVideo && (
             <div className="w-full h-full flex items-center justify-center">
               <div className="text-center">
-                <div className="w-32 h-32 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full flex items-center justify-center mb-4 border border-cyan-500/30 mx-auto">
-                  <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white text-3xl font-bold">
+                <div className="w-32 h-32 rounded-full flex items-center justify-center mb-4 mx-auto" style={{ background: 'rgba(176, 137, 104, 0.2)', border: '1px solid rgba(176, 137, 104, 0.3)' }}>
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl font-bold" style={{ background: '#8B5E3C' }}>
                     {initials}
                   </div>
                 </div>
                 <h2 className="text-2xl font-semibold text-gray-100 mb-1">{otherUserName}</h2>
-                <p className="text-cyan-400 text-sm">Waiting for video...</p>
+                <p className="text-sm" style={{ color: '#B08968' }}>Waiting for video...</p>
               </div>
             </div>
           )}

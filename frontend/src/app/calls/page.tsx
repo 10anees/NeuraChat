@@ -87,7 +87,12 @@ export default function CallsPage() {
         setCalls(response.calls || []);
       } catch (err: any) {
         console.error('Failed to fetch call logs:', err);
-        setError(err.message || 'Failed to load call history');
+        console.error('Error details:', {
+          message: err.message,
+          response: err.response,
+          status: err.status
+        });
+        setError(err.message || err.response?.data?.error || 'Failed to load call history. Make sure the backend server is running.');
       } finally {
         setLoading(false);
       }
@@ -207,52 +212,45 @@ export default function CallsPage() {
 
   return (
     <AuthGuard>
-      <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 relative overflow-hidden">
-        {/* Animated Background Orbs */}
+      <div className="flex h-screen relative overflow-hidden" style={{ background: '#F5EFEA' }}>
+        {/* Warm Background Accent */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(139, 94, 60, 0.08)' }}></div>
+          <div className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(176, 137, 104, 0.08)', animationDelay: '1s' }}></div>
         </div>
 
         <Sidebar isMobileOpen={isSidebarOpen} onMobileClose={() => setIsSidebarOpen(false)} />
 
         {/* Mobile Header */}
-        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 backdrop-blur-xl bg-gray-800/30 border-b border-gray-700/50 p-4 flex items-center gap-3">
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 backdrop-blur-xl p-4 flex items-center gap-3" style={{ background: 'rgba(227, 213, 200, 0.8)', borderBottom: '1px solid #E0D4C8' }}>
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="text-gray-400 hover:text-white transition-colors p-2"
+            className="transition-colors p-2"
+            style={{ color: '#6B584A' }}
             aria-label="Open menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-              Calls
-            </span>
+          <h1 className="text-xl font-bold" style={{ color: '#8B5E3C' }}>
+            Calls
           </h1>
         </div>
 
         <div className="flex-1 overflow-y-auto relative z-10 mt-16 lg:mt-0">
           <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-            {/* Header with Gradient */}
+            {/* Header */}
             <div className="mb-6 lg:mb-8 hidden lg:block">
-              <h1 className="text-2xl lg:text-3xl font-bold mb-2">
-                <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-                  Calls
-                </span>
+              <h1 className="text-2xl lg:text-3xl font-bold mb-2" style={{ color: '#8B5E3C' }}>
+                Calls
               </h1>
-              <p className="text-gray-400 text-sm lg:text-base">View your call history</p>
+              <p className="text-sm lg:text-base" style={{ color: '#6B584A' }}>View your call history</p>
             </div>
 
-            {/* Glass Card Container */}
-            <div className="relative backdrop-blur-xl bg-gray-800/40 rounded-2xl border border-gray-700/50 overflow-hidden shadow-2xl">
-              {/* Neon Border Effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              
-              <div className="divide-y divide-gray-700/50 relative z-10">
+            {/* Card Container */}
+            <div className="relative backdrop-blur-xl rounded-2xl overflow-hidden shadow-lg" style={{ background: 'rgba(227, 213, 200, 0.6)', border: '1px solid #E0D4C8' }}>
+              <div className="relative z-10" style={{ borderBottom: '1px solid rgba(224, 212, 200, 0.3)' }}>
                 {/* Loading State */}
                 {loading && (
                   <div className="p-12 text-center">
@@ -297,12 +295,12 @@ export default function CallsPage() {
                       className="group p-3 sm:p-4 lg:p-5 hover:bg-gray-700/30 transition-all duration-300 flex items-center justify-between relative"
                     >
                       {/* Hover Glow Effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-amber-700/0 via-amber-700/5 to-amber-700/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
                       
                       <div className="flex items-center gap-3 sm:gap-4 relative z-10 min-w-0 flex-1">
                         {/* Avatar with Gradient */}
                         <div className="relative flex-shrink-0">
-                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity"></div>
+                          <div className="absolute inset-0 rounded-full blur opacity-50 group-hover:opacity-75 transition-opacity" style={{ background: '#8B5E3C' }}></div>
                           {avatarUrl ? (
                             <img 
                               src={avatarUrl} 
@@ -310,14 +308,14 @@ export default function CallsPage() {
                               className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover shadow-lg"
                             />
                           ) : (
-                            <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm sm:text-base shadow-lg">
+                            <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white font-semibold text-sm sm:text-base shadow-lg" style={{ background: '#8B5E3C' }}>
                               {getInitials(displayName)}
                             </div>
                           )}
                           {/* Call type indicator */}
                           {call.type === 'video' && (
                             <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gray-800 rounded-full flex items-center justify-center border border-gray-700">
-                              <svg className="w-3 h-3 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <svg className="w-3 h-3" style={{ color: '#B08968' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                               </svg>
                             </div>
@@ -325,7 +323,7 @@ export default function CallsPage() {
                         </div>
 
                         <div className="min-w-0 flex-1">
-                          <h3 className="font-semibold text-gray-100 mb-1 group-hover:text-cyan-400 transition-colors truncate text-sm sm:text-base">
+                          <h3 className="font-semibold text-black-100 mb-1 transition-colors truncate text-sm sm:text-base">
                             {displayName}
                           </h3>
                           <div className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm flex-wrap">
@@ -338,7 +336,7 @@ export default function CallsPage() {
                             {call.chat?.type === 'group' && (
                               <>
                                 <span className="text-gray-500">•</span>
-                                <span className="text-purple-400 text-xs">Group</span>
+                                <span className="text-xs" style={{ color: '#B08968' }}>Group</span>
                               </>
                             )}
                           </div>
@@ -352,8 +350,8 @@ export default function CallsPage() {
                           disabled={callState !== 'idle'}
                           className="relative group/btn disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg blur opacity-0 group-hover/btn:opacity-75 transition-opacity"></div>
-                          <div className="relative bg-gradient-to-r from-cyan-500/20 to-blue-600/20 hover:from-cyan-500 hover:to-blue-600 text-cyan-400 hover:text-white font-medium py-1.5 px-2.5 sm:py-2 sm:px-4 rounded-lg transition-all duration-300 border border-cyan-500/30 hover:border-transparent text-xs sm:text-sm">
+                          <div className="absolute inset-0 rounded-lg blur opacity-0 group-hover/btn:opacity-75 transition-opacity" style={{ background: '#8B5E3C' }}></div>
+                          <div className="relative font-medium py-1.5 px-2.5 sm:py-2 sm:px-4 rounded-lg transition-all duration-300 text-xs sm:text-sm" style={{ background: 'rgba(176, 137, 104, 0.2)', color: '#B08968', border: '1px solid rgba(176, 137, 104, 0.3)' }} onMouseEnter={(e) => { e.currentTarget.style.background = '#B08968'; e.currentTarget.style.color = 'white'; e.currentTarget.style.borderColor = 'transparent'; }} onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(176, 137, 104, 0.2)'; e.currentTarget.style.color = '#B08968'; e.currentTarget.style.borderColor = 'rgba(176, 137, 104, 0.3)'; }}>
                             <span className="hidden sm:inline">{call.type === 'video' ? 'Video call' : 'Call back'}</span>
                             <svg className="sm:hidden w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
@@ -368,8 +366,8 @@ export default function CallsPage() {
             </div>
 
             {/* Decorative Elements */}
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none"></div>
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full blur-2xl pointer-events-none" style={{ background: 'rgba(139, 94, 60, 0.05)' }}></div>
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-2xl pointer-events-none" style={{ background: 'rgba(176, 137, 104, 0.05)' }}></div>
           </div>
         </div>
 

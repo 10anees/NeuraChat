@@ -33,22 +33,22 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Animated Background Orbs */}
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden" style={{ background: '#F5EFEA' }}>
+      {/* Subtle Background Orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-pink-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(139, 94, 60, 0.05)' }}></div>
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(176, 137, 104, 0.05)', animationDelay: '1s' }}></div>
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(209, 191, 167, 0.03)', animationDelay: '2s' }}></div>
       </div>
 
-      <div className="w-full max-w-md relative z-10 px-4">
-        {/* Logo with Glow */}
-        <div className="flex justify-center mb-6 sm:mb-8">
+      <div className="w-full max-w-sm relative z-10 px-4">
+        {/* Logo */}
+        <div className="flex justify-center mb-5">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl blur-lg opacity-75 animate-pulse"></div>
-            <div className="relative w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-2xl">
+            <div className="absolute inset-0 rounded-2xl blur-lg opacity-30" style={{ background: 'rgba(139, 94, 60, 0.2)' }}></div>
+            <div className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-2xl" style={{ background: '#8B5E3C' }}>
               <svg
-                className="w-12 h-12 text-white drop-shadow-lg"
+                className="w-10 h-10 text-white drop-shadow-lg"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -64,32 +64,28 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Title with Gradient */}
-        <div className="text-center mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2">
-            <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-              Create Account
-            </span>
+        {/* Title */}
+        <div className="text-center mb-5">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-1" style={{ color: '#8B5E3C' }}>
+            Create Account
           </h1>
-          <p className="text-gray-400">Join NeuraChat today</p>
+          <p className="text-sm" style={{ color: '#6B584A' }}>Join NeuraChat today</p>
         </div>
 
-        {/* Glass Card */}
-        <div className="relative backdrop-blur-xl bg-gray-800/40 rounded-2xl border border-gray-700/50 p-6 sm:p-8 shadow-2xl">
-          {/* Neon Border Effect */}
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+        {/* Card */}
+        <div className="relative backdrop-blur-xl rounded-2xl p-5 sm:p-6 shadow-2xl" style={{ background: 'rgba(227, 213, 200, 0.6)', border: '1px solid rgba(139, 94, 60, 0.2)' }}>
           
-          <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
+          <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
             {/* Error Message */}
             {error && (
-              <div className="backdrop-blur-sm bg-red-500/10 border border-red-500/50 rounded-lg p-3 text-red-300 text-sm shadow-lg shadow-red-500/20">
+              <div className="backdrop-blur-sm rounded-lg p-3 text-sm shadow-lg" style={{ background: 'rgba(220, 38, 38, 0.1)', border: '1px solid rgba(220, 38, 38, 0.3)', color: '#991B1B' }}>
                 {error}
               </div>
             )}
 
             {/* Full Name Field */}
             <div>
-              <label htmlFor="fullName" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="fullName" className="block text-sm font-medium mb-1.5" style={{ color: '#3A2A20' }}>
                 Display Name
               </label>
               <div className="relative group">
@@ -100,15 +96,14 @@ export default function RegisterPage() {
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Your name"
                   required
-                  className="w-full px-4 py-3 bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
+                  className="w-full px-3 py-2.5 backdrop-blur-sm rounded-lg transition-all duration-300 focus:outline-none text-sm" style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>
               </div>
             </div>
 
             {/* Username Field */}
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="username" className="block text-sm font-medium mb-1.5" style={{ color: '#3A2A20' }}>
                 Username
               </label>
               <div className="relative group">
@@ -119,15 +114,14 @@ export default function RegisterPage() {
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="username"
                   required
-                  className="w-full px-4 py-3 bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
+                  className="w-full px-3 py-2.5 backdrop-blur-sm rounded-lg transition-all duration-300 focus:outline-none text-sm" style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>
               </div>
             </div>
 
             {/* Email Field */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium mb-1.5" style={{ color: '#3A2A20' }}>
                 Email
               </label>
               <div className="relative group">
@@ -138,15 +132,14 @@ export default function RegisterPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
                   required
-                  className="w-full px-4 py-3 bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
+                  className="w-full px-3 py-2.5 backdrop-blur-sm rounded-lg transition-all duration-300 focus:outline-none text-sm" style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>
               </div>
             </div>
 
             {/* Password Field */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-1.5" style={{ color: '#3A2A20' }}>
                 Password
               </label>
               <div className="relative group">
@@ -158,48 +151,45 @@ export default function RegisterPage() {
                   placeholder="••••••••"
                   required
                   minLength={6}
-                  className="w-full px-4 py-3 bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
+                  className="w-full px-3 py-2.5 backdrop-blur-sm rounded-lg transition-all duration-300 focus:outline-none text-sm" style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>
               </div>
             </div>
 
-            {/* Submit Button with Gradient */}
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}
-              className="relative w-full group"
+              className="w-full text-white font-semibold py-2.5 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:opacity-90 text-sm"
+              style={{ background: '#6B4A2F' }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-500 hover:to-purple-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
-                {loading ? (
-                  <span className="flex items-center justify-center gap-2">
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Creating account...
-                  </span>
-                ) : (
-                  'Create Account'
-                )}
-              </div>
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  Creating account...
+                </span>
+              ) : (
+                'Create Account'
+              )}
             </button>
           </form>
 
           {/* Login Link */}
-          <p className="mt-6 text-center text-sm text-gray-400">
+          <p className="mt-5 text-center text-sm" style={{ color: '#6B584A' }}>
             Already have an account?{' '}
             <Link 
               href="/login" 
-              className="text-cyan-400 hover:text-cyan-300 transition-colors font-medium relative group"
+              className="transition-colors font-medium relative group" style={{ color: '#8B5E3C' }}
             >
               Log in
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyan-400 group-hover:w-full transition-all duration-300"></span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 group-hover:w-full transition-all duration-300" style={{ background: '#8B5E3C' }}></span>
             </Link>
           </p>
         </div>
 
         {/* Decorative Elements */}
-        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-cyan-500/5 rounded-full blur-2xl pointer-events-none"></div>
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full blur-2xl pointer-events-none" style={{ background: 'rgba(139, 94, 60, 0.05)' }}></div>
+        <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full blur-2xl pointer-events-none" style={{ background: 'rgba(176, 137, 104, 0.05)' }}></div>
       </div>
     </div>
   );

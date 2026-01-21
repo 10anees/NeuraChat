@@ -25,7 +25,7 @@ export const OutgoingCallUI: React.FC<OutgoingCallUIProps> = ({
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur flex items-center justify-center px-4">
       <div className="relative w-full max-w-md">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl" />
+        <div className="absolute inset-0 rounded-2xl blur-xl" style={{ background: 'linear-gradient(to bottom right, rgba(139, 94, 60, 0.2), rgba(176, 137, 104, 0.2))' }} />
         <div className="relative bg-slate-900/80 border border-slate-800 rounded-2xl p-8 shadow-2xl">
           <div className="flex justify-between items-center mb-6">
             <Link
@@ -48,15 +48,15 @@ export const OutgoingCallUI: React.FC<OutgoingCallUIProps> = ({
             )}
           </div>
 
-          <div className="mx-auto w-24 h-24 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full flex items-center justify-center mb-6 border border-cyan-500/40">
+          <div className="mx-auto w-24 h-24 rounded-full flex items-center justify-center mb-6" style={{ background: 'linear-gradient(to bottom right, rgba(139, 94, 60, 0.2), rgba(176, 137, 104, 0.2))', border: '1px solid rgba(139, 94, 60, 0.4)' }}>
             <span className="text-3xl font-semibold text-white">{initials}</span>
           </div>
 
           <div className="text-center space-y-2 mb-8">
             <h2 className="text-2xl font-semibold text-white truncate">{otherUserName || 'Unknown User'}</h2>
             {!isRejected ? (
-              <div className="flex items-center justify-center gap-2 text-cyan-200">
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-cyan-300 border-t-transparent inline-block" />
+              <div className="flex items-center justify-center gap-2" style={{ color: '#B08968' }}>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-t-transparent inline-block" style={{ borderColor: '#B08968', borderTopColor: 'transparent' }} />
                 <span>Calling…</span>
               </div>
             ) : (

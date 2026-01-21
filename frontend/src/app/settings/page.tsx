@@ -121,66 +121,59 @@ export default function SettingsPage() {
 
   return (
     <AuthGuard>
-      <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 relative overflow-hidden">
-        {/* Animated Background Orbs */}
+      <div className="flex h-screen relative overflow-hidden" style={{ background: '#F5EFEA' }}>
+        {/* Warm Background Accent */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/4 -left-10 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 -right-10 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute top-1/4 -left-10 w-64 h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(139, 94, 60, 0.08)' }}></div>
+          <div className="absolute bottom-1/4 -right-10 w-64 h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(176, 137, 104, 0.08)', animationDelay: '1s' }}></div>
         </div>
 
         <Sidebar isMobileOpen={isSidebarOpen} onMobileClose={() => setIsSidebarOpen(false)} />
 
         {/* Mobile Header */}
-        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 backdrop-blur-xl bg-gray-800/30 border-b border-gray-700/50 p-4 flex items-center gap-3">
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 backdrop-blur-xl p-4 flex items-center gap-3" style={{ background: 'rgba(227, 213, 200, 0.8)', borderBottom: '1px solid #E0D4C8' }}>
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="text-gray-400 hover:text-white transition-colors p-2"
+            className="transition-colors p-2"
+            style={{ color: '#6B584A' }}
             aria-label="Open menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-              Settings
-            </span>
+          <h1 className="text-xl font-bold" style={{ color: '#8B5E3C' }}>
+            Settings
           </h1>
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden relative z-10 mt-16 lg:mt-0">
           <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 xl:max-w-3xl">
-            {/* Header with Gradient */}
+            {/* Header */}
             <div className="mb-4 lg:mb-6">
-              <h1 className="text-xl lg:text-3xl font-bold mb-2 hidden lg:block">
-                <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-                  Settings
-                </span>
+              <h1 className="text-xl lg:text-3xl font-bold mb-2 hidden lg:block" style={{ color: '#8B5E3C' }}>
+                Settings
               </h1>
-              <p className="text-gray-400 text-xs lg:text-sm hidden lg:block">Manage your account and preferences</p>
+              <p className="text-xs lg:text-sm hidden lg:block" style={{ color: '#6B584A' }}>Manage your account and preferences</p>
             </div>
 
-            {/* Profile Section - Glass Card */}
-            <div className="relative backdrop-blur-xl bg-gray-800/40 rounded-xl border border-gray-700/50 p-4 sm:p-6 mb-4 sm:mb-6 shadow-2xl group">
-              {/* Neon Border Effect on Hover */}
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              
+            {/* Profile Section */}
+            <div className="relative backdrop-blur-xl rounded-xl p-4 sm:p-6 mb-4 sm:mb-6 shadow-lg" style={{ background: 'rgba(227, 213, 200, 0.6)', border: '1px solid #E0D4C8' }}>
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-4 sm:mb-6">
-                  <h2 className="text-lg sm:text-xl font-semibold text-gray-100">Profile</h2>
+                  <h2 className="text-lg sm:text-xl font-semibold" style={{ color: '#3A2A20' }}>Profile</h2>
                   <button
                     onClick={() => setIsEditProfileOpen(true)}
-                    className="relative group/btn"
+                    className="px-3 sm:px-4 py-1.5 sm:py-2 text-white font-medium rounded-lg transition-all duration-300 text-xs sm:text-sm"
+                    style={{ background: '#8B5E3C' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = '#6B4A2F'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = '#8B5E3C'}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg blur opacity-50 group-hover/btn:opacity-75 transition-opacity"></div>
-                    <div className="relative px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-cyan-500/20 to-blue-600/20 hover:from-cyan-500 hover:to-blue-600 text-cyan-400 hover:text-white font-medium rounded-lg transition-all duration-300 border border-cyan-500/30 hover:border-transparent text-xs sm:text-sm">
-                      Edit Profile
-                    </div>
+                    Edit Profile
                   </button>
                 </div>
 
-                {/* Avatar Upload with Gradient Glow */}
+                {/* Avatar Upload */}
                 <div className="flex items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
                   <div 
                     className="relative group/avatar cursor-pointer flex-shrink-0"
@@ -193,8 +186,7 @@ export default function SettingsPage() {
                       onChange={handleAvatarChange}
                       className="hidden"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full blur opacity-50 group-hover/avatar:opacity-75 transition-opacity"></div>
-                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl sm:text-2xl shadow-lg overflow-hidden">
+                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center text-white font-bold text-xl sm:text-2xl shadow-lg overflow-hidden" style={{ background: '#8B5E3C' }}>
                       {avatarUrl ? (
                         <img 
                           src={avatarUrl} 
@@ -232,13 +224,16 @@ export default function SettingsPage() {
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm sm:text-base text-gray-300 mb-1">Click to upload a new profile picture</p>
-                    <p className="text-xs sm:text-sm text-gray-500 mb-2">Maximum file size: 5MB</p>
+                    <p className="text-sm sm:text-base mb-1" style={{ color: '#3A2A20' }}>Click to upload a new profile picture</p>
+                    <p className="text-xs sm:text-sm mb-2" style={{ color: '#6B584A' }}>Maximum file size: 5MB</p>
                     {avatarUrl && (
                       <button
                         onClick={handleDeleteAvatar}
                         disabled={avatarUploading}
-                        className="text-xs text-red-400 hover:text-red-300 transition-colors disabled:opacity-50"
+                        className="text-xs transition-colors disabled:opacity-50"
+                        style={{ color: '#D97706' }}
+                        onMouseEnter={(e) => e.currentTarget.style.color = '#B45309'}
+                        onMouseLeave={(e) => e.currentTarget.style.color = '#D97706'}
                       >
                         Remove photo
                       </button>
@@ -248,24 +243,22 @@ export default function SettingsPage() {
 
                 {/* Display Name */}
                 <div className="mb-3 sm:mb-4">
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2" style={{ color: '#3A2A20' }}>
                     Display Name
                   </label>
-                  <div className="relative group/input">
-                    <input
-                      type="text"
-                      value={displayName}
-                      readOnly
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
-                      aria-label="Display Name"
-                    />
-                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none"></div>
-                  </div>
+                  <input
+                    type="text"
+                    value={displayName}
+                    readOnly
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base backdrop-blur-sm rounded-lg transition-all"
+                    style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
+                    aria-label="Display Name"
+                  />
                 </div>
 
                 {/* Username */}
                 <div className="mb-3 sm:mb-4">
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2" style={{ color: '#3A2A20' }}>
                     Username
                   </label>
                   <div className="relative group/input">
@@ -273,79 +266,79 @@ export default function SettingsPage() {
                       type="text"
                       value={username}
                       readOnly
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
+                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base backdrop-blur-sm rounded-lg transition-all"
+                      style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
                       aria-label="Username"
                     />
-                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none"></div>
                   </div>
                 </div>
 
                 {/* Email */}
                 <div className="mb-3 sm:mb-4">
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2" style={{ color: '#3A2A20' }}>
                     Email Address
                   </label>
                   <input
                     type="email"
                     value={user?.email || ''}
                     disabled
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900/30 backdrop-blur-sm border border-gray-700/50 rounded-lg text-gray-500 cursor-not-allowed"
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base backdrop-blur-sm rounded-lg cursor-not-allowed"
+                    style={{ background: 'rgba(255, 255, 255, 0.5)', border: '1px solid #E0D4C8', color: '#6B584A' }}
                     aria-label="Email Address"
                   />
-                  <p className="text-xs text-gray-500 mt-1">Email address cannot be changed</p>
+                  <p className="text-xs mt-1" style={{ color: '#8B5E3C' }}>Email address cannot be changed</p>
                 </div>
 
                 {/* Status Message */}
                 <div className="mb-3 sm:mb-4">
-                  <label className="block text-xs sm:text-sm font-medium text-gray-300 mb-1.5 sm:mb-2">
+                  <label className="block text-xs sm:text-sm font-medium mb-1.5 sm:mb-2" style={{ color: '#3A2A20' }}>
                     Status Message
                   </label>
-                  <div className="relative group/input">
-                    <input
-                      type="text"
-                      placeholder="What's on your mind?"
-                      value={statusMessage}
-                      readOnly
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all duration-300"
-                    />
-                    <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within/input:opacity-100 transition-opacity pointer-events-none"></div>
-                  </div>
+                  <input
+                    type="text"
+                    placeholder="What's on your mind?"
+                    value={statusMessage}
+                    readOnly
+                    className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base backdrop-blur-sm rounded-lg transition-all"
+                    style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
+                  />
                 </div>
               </div>
             </div>
 
-            {/* Account Actions - Glass Card */}
-            <div className="relative backdrop-blur-xl bg-gray-800/40 rounded-xl border border-gray-700/50 p-4 sm:p-6 shadow-2xl group">
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              
+            {/* Account Actions */}
+            <div className="relative backdrop-blur-xl rounded-xl p-4 sm:p-6 shadow-lg" style={{ background: 'rgba(227, 213, 200, 0.6)', border: '1px solid #E0D4C8' }}>
               <div className="relative z-10">
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-100 mb-3 sm:mb-4">Account</h2>
+                <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4" style={{ color: '#3A2A20' }}>Account</h2>
                 
                 <div className="space-y-2 sm:space-y-3">
                   <button 
                     onClick={() => setIsChangePasswordOpen(true)}
-                    className="w-full text-left px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-gray-700/30 hover:bg-gray-700/50 backdrop-blur-sm rounded-lg text-gray-200 transition-all duration-300 border border-gray-600/30 hover:border-cyan-500/50 group/btn"
+                    className="w-full text-left px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base backdrop-blur-sm rounded-lg transition-all duration-300"
+                    style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(139, 94, 60, 0.1)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.7)'}
                   >
-                    <span className="group-hover/btn:text-cyan-400 transition-colors">Change Password</span>
+                    Change Password
                   </button>
 
                   <button
                     onClick={handleLogout}
                     disabled={loading}
-                    className="relative w-full group/logout"
+                    className="w-full text-left px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base backdrop-blur-sm rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#DC2626' }}
+                    onMouseEnter={(e) => !loading && (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.15)')}
+                    onMouseLeave={(e) => !loading && (e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)')}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-600 rounded-lg blur opacity-50 group-hover/logout:opacity-75 transition-opacity"></div>
-                    <div className="relative w-full text-left px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base bg-red-900/20 hover:bg-red-900/30 backdrop-blur-sm border border-red-600/50 rounded-lg text-red-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
-                      {loading ? 'Logging out...' : 'Logout'}
-                    </div>
+                    {loading ? 'Logging out...' : 'Logout'}
                   </button>
                 </div>
               </div>
             </div>
 
-            {/* Account Info with Gradient Text */}
-            <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm text-gray-500">
-              <p>Account created: <span className="text-cyan-400">{user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</span></p>
+            {/* Account Info */}
+            <div className="mt-4 sm:mt-6 text-center text-xs sm:text-sm" style={{ color: '#6B584A' }}>
+              <p>Account created: <span style={{ color: '#8B5E3C', fontWeight: 500 }}>{user?.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}</span></p>
             </div>
           </div>
         </div>

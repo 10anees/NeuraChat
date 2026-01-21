@@ -15,10 +15,43 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
   const { user } = useAuth();
 
   const navItems = [
-    { href: '/dashboard', icon: '💬', label: 'Chats' },
-    { href: '/ai-agent', icon: '⚡', label: 'AI Agent' },
-    { href: '/calls', icon: '📞', label: 'Calls' },
-    { href: '/settings', icon: '⚙️', label: 'Settings' },
+    { 
+      href: '/dashboard', 
+      label: 'Chats',
+      icon: (isActive: boolean) => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+        </svg>
+      )
+    },
+    { 
+      href: '/ai-agent', 
+      label: 'AI Agent',
+      icon: (isActive: boolean) => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      )
+    },
+    { 
+      href: '/calls', 
+      label: 'Calls',
+      icon: (isActive: boolean) => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        </svg>
+      )
+    },
+    { 
+      href: '/settings', 
+      label: 'Settings',
+      icon: (isActive: boolean) => (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      )
+    },
   ];
 
   const getInitials = (name: string) => {
@@ -50,20 +83,22 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
       <div
         className={`
           fixed lg:static inset-y-0 left-0 z-50
-          w-20 bg-gradient-to-b from-gray-900/95 to-gray-900/90 backdrop-blur-xl border-r border-gray-700/50 
-          flex flex-col items-center py-6 space-y-8 relative
+          w-16 backdrop-blur-xl border-r 
+          flex flex-col items-center py-4 space-y-6 relative
           transform transition-transform duration-300 ease-in-out
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
+        style={{ background: 'rgba(227, 213, 200, 0.8)', borderColor: '#E0D4C8' }}
       >
-      {/* Vertical Neon Line */}
-      <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gradient-to-b from-cyan-500/50 via-blue-500/50 to-purple-500/50"></div>
+      {/* Vertical Accent Line */}
+      <div className="absolute left-0 top-0 bottom-0 w-0.5" style={{ background: 'linear-gradient(to bottom, rgba(139, 94, 60, 0.3), rgba(176, 137, 104, 0.3))' }}></div>
       
       {/* Close Button (Mobile Only) */}
       {onMobileClose && (
         <button
           onClick={onMobileClose}
-          className="lg:hidden absolute top-4 right-4 text-gray-400 hover:text-white transition-colors p-2"
+          className="lg:hidden absolute top-4 right-4 transition-colors p-2"
+          style={{ color: '#6B584A' }}
           aria-label="Close menu"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,15 +107,15 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
         </button>
       )}
 
-      {/* Logo with Glow Effect */}
+      {/* Logo */}
       <Link href="/dashboard" onClick={handleLinkClick} className="flex items-center justify-center group">
         <div className="relative">
-          {/* Glow Effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl blur-md opacity-75 group-hover:opacity-100 transition-opacity"></div>
+          {/* Subtle shadow */}
+          <div className="absolute inset-0 rounded-xl blur-md opacity-40 group-hover:opacity-60 transition-opacity" style={{ background: '#8B5E3C' }}></div>
           {/* Logo */}
-          <div className="relative w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/50 group-hover:shadow-cyan-500/75 transition-all group-hover:scale-110 duration-300">
+          <div className="relative w-10 h-10 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300" style={{ background: '#8B5E3C' }}>
             <svg
-              className="w-7 h-7 text-white"
+              className="w-6 h-6 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -110,41 +145,38 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
             >
               {/* Active Indicator */}
               {isActive && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-cyan-400 to-blue-600 rounded-r-full shadow-lg shadow-cyan-500/50"></div>
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full shadow-lg" style={{ background: '#8B5E3C' }}></div>
               )}
               
               {/* Icon Container */}
               <div
-                className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl transition-all duration-300 ${
+                className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                   isActive
-                    ? 'bg-gradient-to-br from-cyan-500/20 to-blue-600/20 text-white shadow-lg shadow-cyan-500/30 scale-110'
-                    : 'text-gray-400 hover:text-cyan-400 hover:bg-gray-800/50 hover:scale-105'
+                    ? 'shadow-lg scale-110'
+                    : 'hover:scale-105'
                 }`}
+                style={isActive ? { background: 'rgba(139, 94, 60, 0.15)', color: '#8B5E3C' } : { color: '#6B584A' }}
               >
-                {/* Glow on Hover */}
-                {!isActive && (
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 rounded-xl transition-all duration-300"></div>
-                )}
-                <span className="relative z-10">{item.icon}</span>
+                {item.icon(isActive)}
               </div>
               
               {/* Tooltip */}
-              <div className="absolute left-full ml-4 px-3 py-2 bg-gray-800/90 backdrop-blur-sm border border-gray-700/50 rounded-lg text-sm text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-xl">
+              <div className="absolute left-full ml-4 px-3 py-2 backdrop-blur-sm rounded-lg text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-xl" style={{ background: 'rgba(227, 213, 200, 0.95)', border: '1px solid #E0D4C8', color: '#3A2A20' }}>
                 {item.label}
                 {/* Arrow */}
-                <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent border-r-gray-800/90"></div>
+                <div className="absolute right-full top-1/2 -translate-y-1/2 border-4 border-transparent" style={{ borderRightColor: 'rgba(227, 213, 200, 0.95)' }}></div>
               </div>
             </Link>
           );
         })}
       </nav>
 
-      {/* User Avatar with Glow */}
+      {/* User Avatar */}
       <div className="relative group cursor-pointer">
-        {/* Glow Ring */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-full blur-sm opacity-0 group-hover:opacity-75 transition-opacity"></div>
+        {/* Subtle shadow */}
+        <div className="absolute inset-0 rounded-full blur-sm opacity-0 group-hover:opacity-50 transition-opacity" style={{ background: '#8B5E3C' }}></div>
         {/* Avatar */}
-        <div className="relative w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm shadow-lg shadow-cyan-500/30 border-2 border-gray-700/50 group-hover:border-cyan-500/50 transition-all group-hover:scale-110 duration-300 overflow-hidden">
+        <div className="relative w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold text-xs shadow-lg border-2 group-hover:scale-110 transition-all duration-300 overflow-hidden" style={{ background: '#8B5E3C', borderColor: '#E0D4C8' }}>
           {user?.avatar_url ? (
             <img 
               src={user.avatar_url} 
@@ -157,11 +189,11 @@ export default function Sidebar({ isMobileOpen = false, onMobileClose }: Sidebar
         </div>
         
         {/* Online Indicator */}
-        <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-gray-900 shadow-lg shadow-emerald-500/50 animate-pulse"></div>
+        <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 shadow-lg animate-pulse" style={{ background: '#10B981', borderColor: '#F5EFEA', boxShadow: '0 0 10px rgba(16, 185, 129, 0.5)' }}></div>
       </div>
 
-      {/* Bottom Glow */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-cyan-500/5 to-transparent pointer-events-none"></div>
+      {/* Bottom gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none" style={{ background: 'linear-gradient(to top, rgba(139, 94, 60, 0.03), transparent)' }}></div>
       </div>
     </>
   );

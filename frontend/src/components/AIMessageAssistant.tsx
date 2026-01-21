@@ -176,7 +176,7 @@ export default function AIMessageAssistant({
                       AI Message Assistant
                     </span>
                   </h2>
-                  <p className="text-sm text-gray-400">Choose how to enhance your message</p>
+                  <p className="text-sm" style={{ color: '#B08968' }}>Choose how to enhance your message</p>
                 </div>
               </div>
               <button
@@ -226,10 +226,10 @@ export default function AIMessageAssistant({
                       {action.icon}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-medium text-gray-100 text-sm mb-1">
+                      <div className="font-medium text-white text-sm mb-1">
                         {action.label}
                       </div>
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs" style={{ color: '#D1BFA7' }}>
                         {action.description}
                       </div>
                     </div>
@@ -267,7 +267,7 @@ export default function AIMessageAssistant({
             )}
 
             {/* Helper Text */}
-            <div className="text-xs text-gray-500 italic">
+            <div className="text-xs italic" style={{ color: '#8B5E3C' }}>
               ✨ AI-powered suggestions to help you communicate better
             </div>
           </div>

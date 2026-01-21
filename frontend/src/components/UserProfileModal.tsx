@@ -85,7 +85,7 @@ export default function UserProfileModal({ userId, isOpen, onClose }: UserProfil
         </button>
 
         {/* Gradient overlay */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-br from-cyan-500/20 to-blue-600/20"></div>
+        <div className="absolute top-0 left-0 right-0 h-32" style={{ background: 'linear-gradient(to bottom right, rgba(139, 94, 60, 0.2), rgba(176, 137, 104, 0.2))' }}></div>
 
         {loading ? (
           <div className="flex items-center justify-center py-24">
@@ -111,7 +111,7 @@ export default function UserProfileModal({ userId, isOpen, onClose }: UserProfil
             {/* Profile Avatar */}
             <div className="flex flex-col items-center pt-12 pb-6 px-6">
               <div className="relative mb-4">
-                <div className="w-24 h-24 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-cyan-500/50">
+                <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg" style={{ background: '#8B5E3C', boxShadow: '0 10px 15px -3px rgba(139, 94, 60, 0.5)' }}>
                   {profile.avatar_url ? (
                     <img 
                       src={profile.avatar_url} 
@@ -145,8 +145,8 @@ export default function UserProfileModal({ userId, isOpen, onClose }: UserProfil
               {/* Email */}
               <div className="bg-gray-700/30 rounded-xl p-4 border border-gray-600/30">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-cyan-500/20 to-blue-600/20 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(176, 137, 104, 0.2)' }}>
+                    <svg className="w-5 h-5" style={{ color: '#B08968' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -160,8 +160,8 @@ export default function UserProfileModal({ userId, isOpen, onClose }: UserProfil
               {/* Last Seen */}
               <div className="bg-gray-700/30 rounded-xl p-4 border border-gray-600/30">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500/20 to-pink-600/20 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(176, 137, 104, 0.2)' }}>
+                    <svg className="w-5 h-5" style={{ color: '#B08968' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
@@ -175,8 +175,8 @@ export default function UserProfileModal({ userId, isOpen, onClose }: UserProfil
               {/* Member Since */}
               <div className="bg-gray-700/30 rounded-xl p-4 border border-gray-600/30">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(176, 137, 104, 0.2)' }}>
+                    <svg className="w-5 h-5" style={{ color: '#B08968' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -194,8 +194,8 @@ export default function UserProfileModal({ userId, isOpen, onClose }: UserProfil
                 onClick={onClose}
                 className="flex-1 relative group"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
-                <div className="relative bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-500 hover:to-purple-600 text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg">
+                <div className="absolute inset-0 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity" style={{ background: '#8B5E3C' }}></div>
+                <div className="relative text-white font-medium py-2.5 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 shadow-lg" style={{ background: '#B08968' }} onMouseEnter={(e) => e.currentTarget.style.background = '#8B5E3C'} onMouseLeave={(e) => e.currentTarget.style.background = '#B08968'}>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                   </svg>

@@ -115,25 +115,35 @@ export default function NewChatModal({ isOpen, onClose, onChatCreated }: NewChat
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4" style={{ background: 'rgba(0, 0, 0, 0.7)' }}>
       <div className="relative w-full max-w-md max-h-[95vh] overflow-hidden">
-        {/* Glow Effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl"></div>
+        {/* Warm Glow Effect */}
+        <div className="absolute inset-0 rounded-2xl blur-xl" style={{ background: 'rgba(139, 94, 60, 0.15)' }}></div>
         
         {/* Modal */}
-        <div className="relative backdrop-blur-xl bg-gray-800/40 rounded-2xl border border-gray-700/50 max-h-[95vh] flex flex-col shadow-2xl">
+        <div className="relative backdrop-blur-xl rounded-2xl max-h-[95vh] flex flex-col shadow-2xl" style={{
+          background: 'rgba(227, 213, 200, 0.95)',
+          border: '1px solid rgba(224, 212, 200, 0.5)'
+        }}>
           {/* Header */}
-          <div className="p-4 sm:p-6 border-b border-gray-700/50">
+          <div className="p-4 sm:p-6" style={{ borderBottom: '1px solid rgba(224, 212, 200, 0.5)' }}>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-bold">
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                  New Chat
-                </span>
+              <h2 className="text-2xl font-bold" style={{ color: '#8B5E3C' }}>
+                New Chat
               </h2>
               <button
                 title="Close"
                 onClick={onClose}
-                className="text-gray-400 hover:text-cyan-400 transition-colors p-2 hover:bg-gray-700/50 rounded-lg"
+                className="transition-colors p-2 rounded-lg"
+                style={{ color: '#6B584A' }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = '#8B5E3C';
+                  e.currentTarget.style.background = 'rgba(139, 94, 60, 0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = '#6B584A';
+                  e.currentTarget.style.background = 'transparent';
+                }}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -145,21 +155,21 @@ export default function NewChatModal({ isOpen, onClose, onChatCreated }: NewChat
             <div className="flex gap-2 mb-4">
               <button
                 onClick={() => setChatType('private')}
-                className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300 ${
-                  chatType === 'private'
-                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30'
-                    : 'bg-gray-700/30 text-gray-400 hover:bg-gray-700/50'
-                }`}
+                className="flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300"
+                style={{
+                  background: chatType === 'private' ? '#8B5E3C' : 'rgba(107, 88, 74, 0.15)',
+                  color: chatType === 'private' ? 'white' : '#6B584A'
+                }}
               >
                 Private
               </button>
               <button
                 onClick={() => setChatType('group')}
-                className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300 ${
-                  chatType === 'group'
-                    ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30'
-                    : 'bg-gray-700/30 text-gray-400 hover:bg-gray-700/50'
-                }`}
+                className="flex-1 py-2 px-4 rounded-lg font-medium transition-all duration-300"
+                style={{
+                  background: chatType === 'group' ? '#8B5E3C' : 'rgba(107, 88, 74, 0.15)',
+                  color: chatType === 'group' ? 'white' : '#6B584A'
+                }}
               >
                 Group
               </button>
@@ -167,53 +177,89 @@ export default function NewChatModal({ isOpen, onClose, onChatCreated }: NewChat
 
             {/* Group Name Input */}
             {chatType === 'group' && (
-              <div className="mb-4 relative group">
+              <div className="mb-4">
                 <input
                   type="text"
                   placeholder="Group name"
                   value={groupName}
                   onChange={(e) => setGroupName(e.target.value)}
-                  className="w-full px-4 py-2 bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                  className="w-full px-4 py-2 backdrop-blur-sm rounded-lg transition-all"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.7)',
+                    border: '1px solid #E0D4C8',
+                    color: '#3A2A20'
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = '#8B5E3C';
+                    e.currentTarget.style.boxShadow = '0 0 0 2px rgba(139, 94, 60, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = '#E0D4C8';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>
               </div>
             )}
 
             {/* Search Input */}
-            <div className="relative group">
+            <div className="relative">
               <input
                 type="text"
                 placeholder="Search users..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 pl-10 bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                className="w-full px-4 py-2 pl-10 backdrop-blur-sm rounded-lg transition-all"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.7)',
+                  border: '1px solid #E0D4C8',
+                  color: '#3A2A20'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = '#8B5E3C';
+                  e.currentTarget.style.boxShadow = '0 0 0 2px rgba(139, 94, 60, 0.1)';
+                  const icon = e.currentTarget.previousElementSibling as HTMLElement;
+                  if (icon) icon.style.color = '#8B5E3C';
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = '#E0D4C8';
+                  e.currentTarget.style.boxShadow = 'none';
+                  const icon = e.currentTarget.previousElementSibling as HTMLElement;
+                  if (icon) icon.style.color = '#6B584A';
+                }}
               />
               <svg
-                className="absolute left-3 top-2.5 w-5 h-5 text-gray-500 group-focus-within:text-cyan-400 transition-colors"
+                className="absolute left-3 top-2.5 w-5 h-5 transition-colors pointer-events-none"
+                style={{ color: '#6B584A' }}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-cyan-500/0 via-cyan-500/5 to-cyan-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>
             </div>
           </div>
 
           {/* Selected Users */}
           {selectedUsers.length > 0 && (
-            <div className="px-6 py-3 border-b border-gray-700/50">
+            <div className="px-6 py-3" style={{ borderBottom: '1px solid rgba(224, 212, 200, 0.5)' }}>
               <div className="flex flex-wrap gap-2">
                 {selectedUsers.map((user) => (
                   <div
                     key={user.id}
-                    className="flex items-center gap-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 backdrop-blur-sm border border-cyan-500/30 rounded-lg px-3 py-1 shadow-lg shadow-cyan-500/20"
+                    className="flex items-center gap-2 backdrop-blur-sm rounded-lg px-3 py-1"
+                    style={{
+                      background: 'rgba(139, 94, 60, 0.15)',
+                      border: '1px solid rgba(139, 94, 60, 0.3)'
+                    }}
                   >
-                    <span className="text-sm text-gray-200">{user.username}</span>
+                    <span className="text-sm" style={{ color: '#3A2A20' }}>{user.username}</span>
                     <button
                       title="Remove"
                       onClick={() => toggleUserSelection(user)}
-                      className="text-gray-400 hover:text-cyan-400 transition-colors"
+                      className="transition-colors"
+                      style={{ color: '#6B584A' }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = '#8B5E3C'}
+                      onMouseLeave={(e) => e.currentTarget.style.color = '#6B584A'}
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -235,26 +281,28 @@ export default function NewChatModal({ isOpen, onClose, onChatCreated }: NewChat
                     <button
                       key={searchUser.id}
                       onClick={() => toggleUserSelection(searchUser)}
-                      className={`w-full flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${
-                        isSelected
-                          ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/30 shadow-lg shadow-cyan-500/20'
-                          : 'hover:bg-gray-700/30 border border-transparent'
-                      }`}
+                      className="w-full flex items-center gap-3 p-3 rounded-lg transition-all duration-300"
+                      style={{
+                        background: isSelected ? 'rgba(139, 94, 60, 0.15)' : 'transparent',
+                        border: isSelected ? '1px solid rgba(139, 94, 60, 0.3)' : '1px solid transparent'
+                      }}
+                      onMouseEnter={(e) => !isSelected && (e.currentTarget.style.background = 'rgba(107, 88, 74, 0.1)')}
+                      onMouseLeave={(e) => !isSelected && (e.currentTarget.style.background = 'transparent')}
                     >
                       <div className="relative">
-                        <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0 shadow-lg">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold flex-shrink-0" style={{ background: '#8B5E3C' }}>
                           {getInitials(searchUser.full_name || searchUser.username)}
                         </div>
                         {isSelected && (
-                          <div className="absolute inset-0 bg-cyan-400/20 rounded-full animate-pulse"></div>
+                          <div className="absolute inset-0 rounded-full animate-pulse" style={{ background: 'rgba(139, 94, 60, 0.2)' }}></div>
                         )}
                       </div>
                       <div className="flex-1 text-left">
-                        <div className="font-medium text-gray-100">{searchUser.full_name}</div>
-                        <div className="text-sm text-gray-400">@{searchUser.username}</div>
+                        <div className="font-medium" style={{ color: '#3A2A20' }}>{searchUser.full_name}</div>
+                        <div className="text-sm" style={{ color: '#6B584A' }}>@{searchUser.username}</div>
                       </div>
                       {isSelected && (
-                        <svg className="w-5 h-5 text-cyan-400" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-5 h-5" style={{ color: '#8B5E3C' }} fill="currentColor" viewBox="0 0 20 20">
                           <path
                             fillRule="evenodd"
                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
@@ -267,9 +315,9 @@ export default function NewChatModal({ isOpen, onClose, onChatCreated }: NewChat
                 })}
               </div>
             ) : searchQuery.length >= 2 ? (
-              <p className="text-center text-gray-400 py-8">No users found</p>
+              <p className="text-center py-8" style={{ color: '#6B584A' }}>No users found</p>
             ) : (
-              <p className="text-center text-gray-400 py-8">Search for users to start a chat</p>
+              <p className="text-center py-8" style={{ color: '#6B584A' }}>Search for users to start a chat</p>
             )}
           </div>
 
@@ -283,22 +331,25 @@ export default function NewChatModal({ isOpen, onClose, onChatCreated }: NewChat
           )}
 
           {/* Footer */}
-          <div className="p-4 sm:p-6 border-t border-gray-700/50 flex gap-3">
+          <div className="p-4 sm:p-6 flex gap-3" style={{ borderTop: '1px solid rgba(224, 212, 200, 0.5)' }}>
             <button
               onClick={onClose}
-              className="flex-1 px-4 py-2 bg-gray-700/30 hover:bg-gray-700/50 text-gray-200 font-medium rounded-lg transition-all duration-300"
+              className="flex-1 px-4 py-2 font-medium rounded-lg transition-all duration-300"
+              style={{ background: 'rgba(107, 88, 74, 0.2)', color: '#3A2A20' }}
+              onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(107, 88, 74, 0.3)'}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(107, 88, 74, 0.2)'}
             >
               Cancel
             </button>
             <button
               onClick={handleCreateChat}
               disabled={loading || selectedUsers.length === 0}
-              className="relative flex-1 group"
+              className="flex-1 px-4 py-2 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium"
+              style={{ background: '#6B4A2F' }}
+              onMouseEnter={(e) => !e.currentTarget.disabled && (e.currentTarget.style.background = '#8B5E3C')}
+              onMouseLeave={(e) => !e.currentTarget.disabled && (e.currentTarget.style.background = '#6B4A2F')}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-500 hover:to-purple-600 px-4 py-2 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium shadow-lg">
-                {loading ? 'Creating...' : 'Create Chat'}
-              </div>
+              {loading ? 'Creating...' : 'Create Chat'}
             </button>
           </div>
         </div>

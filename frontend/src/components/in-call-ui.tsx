@@ -51,7 +51,7 @@ export const InCallUI: React.FC<InCallUIProps> = ({
   return (
     <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="relative w-full max-w-md mx-4">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl" />
+        <div className="absolute inset-0 rounded-2xl blur-xl" style={{ background: 'rgba(139, 94, 60, 0.2)' }} />
 
         <div className="relative backdrop-blur-xl bg-gray-800/40 border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
           <div className="absolute top-4 right-4 flex gap-2">
@@ -74,18 +74,22 @@ export const InCallUI: React.FC<InCallUIProps> = ({
               </svg>
             </button>
           </div>
-          <div className="mx-auto w-24 h-24 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full flex items-center justify-center mb-6 border border-cyan-500/30">
-            <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">{initials}</div>
+          <div className="mx-auto w-24 h-24 rounded-full flex items-center justify-center mb-6" style={{ background: 'rgba(176, 137, 104, 0.2)', border: '1px solid rgba(176, 137, 104, 0.3)' }}>
+            <div className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-bold" style={{ background: '#8B5E3C' }}>{initials}</div>
           </div>
           <h2 className="text-2xl font-semibold text-gray-100 mb-1 text-center">{otherUserName}</h2>
-          <p className="text-cyan-400 mb-6 text-center text-sm">In call • {elapsed}</p>
+          <p className="mb-6 text-center text-sm" style={{ color: '#B08968' }}>In call • {elapsed}</p>
 
           <div className="flex items-end justify-center gap-1 h-20 max-w-xs mx-auto mb-6">
             {levels.map((level, idx) => (
               <div
                 key={idx}
-                className="flex-1 rounded-sm bg-gradient-to-t from-gray-700 via-cyan-500 to-blue-500 transition-all duration-150"
-                style={{ height: `${Math.max(10, level * 0.8)}%`, opacity: 0.4 + level / 200 }}
+                className="flex-1 rounded-sm transition-all duration-150"
+                style={{ 
+                  height: `${Math.max(10, level * 0.8)}%`, 
+                  opacity: 0.4 + level / 200,
+                  background: 'linear-gradient(to top, #4B5563, #8B5E3C, #B08968)'
+                }}
               />
             ))}
           </div>

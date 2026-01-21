@@ -37,8 +37,13 @@ export default function AIAgentPage() {
       const response = await api.getMainAISession() as { session: AISession };
       setSession(response.session);
       await fetchHistory();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to fetch AI session:', error);
+      console.error('Error details:', {
+        message: error.message,
+        response: error.response,
+        status: error.status
+      });
     } finally {
       setLoading(false);
     }
@@ -126,52 +131,53 @@ export default function AIAgentPage() {
 
   return (
     <AuthGuard>
-      <div className="flex h-screen bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 relative overflow-hidden">
-        {/* Background Grid Effect */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,217,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(0,217,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none"></div>
+      <div className="flex h-screen relative overflow-hidden" style={{ background: '#F5EFEA' }}>
+        {/* Warm Background Accent */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-1/4 -left-10 w-64 h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(139, 94, 60, 0.08)' }}></div>
+          <div className="absolute bottom-1/4 -right-10 w-64 h-64 rounded-full blur-3xl animate-pulse" style={{ background: 'rgba(176, 137, 104, 0.08)', animationDelay: '1s' }}></div>
+        </div>
         
         <Sidebar isMobileOpen={isSidebarOpen} onMobileClose={() => setIsSidebarOpen(false)} />
 
         {/* Mobile Header */}
-        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 backdrop-blur-xl bg-gray-800/30 border-b border-gray-700/50 p-4 flex items-center gap-3">
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 backdrop-blur-xl p-4 flex items-center gap-3" style={{ background: 'rgba(227, 213, 200, 0.8)', borderBottom: '1px solid #E0D4C8' }}>
           <button
             onClick={() => setIsSidebarOpen(true)}
-            className="text-gray-400 hover:text-white transition-colors p-2"
+            className="transition-colors p-2"
+            style={{ color: '#6B584A' }}
             aria-label="Open menu"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <h1 className="text-xl font-bold">
-            <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-              AI Agent
-            </span>
+          <h1 className="text-xl font-bold" style={{ color: '#8B5E3C' }}>
+            AI Agent
           </h1>
         </div>
 
         {/* AI Agent Chat Area */}
         <div className="flex-1 flex flex-col relative z-10 mt-16 lg:mt-0 min-w-0">
           {/* Header */}
-          <div className="px-4 py-3 lg:px-6 lg:py-4 border-b border-gray-700/50 backdrop-blur-xl bg-gray-800/30 relative">
-            <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"></div>
+          <div className="px-4 py-3 lg:px-6 lg:py-4 backdrop-blur-xl relative" style={{ background: 'rgba(227, 213, 200, 0.8)', borderBottom: '1px solid #E0D4C8' }}>
             
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white shadow-lg shadow-purple-500/30">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white" style={{ background: '#B08968' }}>
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <div className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 rounded-full border-2 border-gray-900 shadow-lg shadow-emerald-500/50 animate-pulse"></div>
+                <div className="absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 animate-pulse" style={{ background: '#8B5E3C', borderColor: '#F5EFEA' }}></div>
               </div>
               <div className="flex-1">
-                <h2 className="font-semibold text-gray-100 flex items-center gap-2">
-                  <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                <h2 className="font-semibold flex items-center gap-2" style={{ color: '#8B5E3C' }}>
+                  <span>
                     NeuraChat AI Assistant
                   </span>
                 </h2>
-                <p className="text-sm text-gray-400">Your intelligent copilot</p>
+                <p className="text-sm" style={{ color: '#6B584A' }}>Your intelligent copilot</p>
               </div>
             </div>
           </div>
@@ -181,30 +187,27 @@ export default function AIAgentPage() {
             {loading ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin mx-auto mb-4"></div>
-                  <p className="text-gray-400">Loading AI Assistant...</p>
+                  <div className="w-12 h-12 border-4 rounded-full animate-spin mx-auto mb-4" style={{ borderColor: 'rgba(139, 94, 60, 0.2)', borderTopColor: '#8B5E3C' }}></div>
+                  <p style={{ color: '#6B584A' }}>Loading AI Assistant...</p>
                 </div>
               </div>
             ) : history.length === 0 ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center max-w-md">
                   <div className="relative w-24 h-24 mx-auto mb-6">
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-pink-600 rounded-full blur-lg opacity-50 animate-pulse"></div>
-                    <div className="relative w-24 h-24 backdrop-blur-sm bg-gray-800/40 border border-gray-700/50 rounded-full flex items-center justify-center">
-                      <svg className="w-12 h-12 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="relative w-24 h-24 backdrop-blur-sm rounded-full flex items-center justify-center" style={{ background: 'rgba(176, 137, 104, 0.3)', border: '1px solid #E0D4C8' }}>
+                      <svg className="w-12 h-12" style={{ color: '#8B5E3C' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
                   </div>
-                  <h2 className="text-xl font-semibold mb-3">
-                    <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-                      Welcome to NeuraChat AI Assistant
-                    </span>
+                  <h2 className="text-xl font-semibold mb-3" style={{ color: '#8B5E3C' }}>
+                    Welcome to NeuraChat AI Assistant
                   </h2>
-                  <p className="text-gray-400 mb-4">
+                  <p className="mb-4" style={{ color: '#6B584A' }}>
                     I'm your intelligent copilot, ready to help you with messaging, searching, managing chats, and much more.
                   </p>
-                  <div className="text-left space-y-2 text-sm text-gray-500">
+                  <div className="text-left space-y-2 text-sm" style={{ color: '#6B584A' }}>
                     <p>💬 Send messages on your behalf</p>
                     <p>🔍 Search users and conversations</p>
                     <p>📊 Summarize chat history</p>
@@ -220,13 +223,13 @@ export default function AIAgentPage() {
                   {interaction.user_query && (
                     <div className="flex justify-end">
                       <div className="flex gap-2 max-w-[85%] sm:max-w-[70%] flex-row-reverse">
-                        <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0 shadow-lg shadow-cyan-500/30">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0" style={{ background: '#8B5E3C' }}>
                           {user ? getInitials(user.full_name || user.username) : 'U'}
                         </div>
                         <div className="relative group">
-                          <div className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30">
+                          <div className="px-4 py-2 rounded-lg text-white" style={{ background: '#D1BFA7', color: '#3A2A20' }}>
                             <p className="whitespace-pre-wrap break-words">{interaction.user_query}</p>
-                            <p className="text-xs mt-1 text-cyan-100">
+                            <p className="text-xs mt-1" style={{ color: '#6B584A' }}>
                               {formatMessageTime(interaction.created_at)}
                             </p>
                           </div>
@@ -239,18 +242,18 @@ export default function AIAgentPage() {
                   {interaction.ai_response && (
                     <div className="flex justify-start">
                       <div className="flex gap-2 max-w-[85%] sm:max-w-[70%]">
-                        <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0 shadow-lg shadow-purple-500/30">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0" style={{ background: '#B08968' }}>
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                           </svg>
                         </div>
                         <div className="relative group">
-                          <div className="text-xs text-purple-400 mb-1 px-3 font-medium">
+                          <div className="text-xs mb-1 px-3 font-medium" style={{ color: '#8B5E3C' }}>
                             AI Assistant
                           </div>
-                          <div className="px-4 py-2 rounded-lg backdrop-blur-sm bg-gray-700/40 border border-gray-600/30 text-gray-100">
+                          <div className="px-4 py-2 rounded-lg backdrop-blur-sm" style={{ background: 'rgba(227, 213, 200, 0.6)', border: '1px solid #E0D4C8', color: '#3A2A20' }}>
                             <p className="whitespace-pre-wrap break-words">{interaction.ai_response}</p>
-                            <p className="text-xs mt-1 text-gray-400">
+                            <p className="text-xs mt-1" style={{ color: '#6B584A' }}>
                               {formatMessageTime(interaction.created_at)}
                             </p>
                           </div>
@@ -285,11 +288,10 @@ export default function AIAgentPage() {
           </div>
 
           {/* Message Input */}
-          <div className="px-4 py-3 lg:px-6 lg:py-4 border-t border-gray-700/50 backdrop-blur-xl bg-gray-800/30 relative">
-            <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"></div>
-            
+          {/* Message Input */}
+          <div className="px-4 py-3 lg:px-6 lg:py-4 backdrop-blur-xl relative" style={{ background: 'rgba(227, 213, 200, 0.8)', borderTop: '1px solid #E0D4C8' }}>
             <div className="flex gap-2 lg:gap-3">
-              <div className="flex-1 relative group">
+              <div className="flex-1">
                 <input
                   type="text"
                   placeholder="Ask me anything..."
@@ -302,30 +304,38 @@ export default function AIAgentPage() {
                     }
                   }}
                   disabled={sendingMessage}
-                  className="w-full px-3 lg:px-4 py-2 lg:py-3 text-sm lg:text-base bg-gray-900/50 backdrop-blur-sm border border-gray-700 rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all"
+                  className="w-full px-3 lg:px-4 py-2 lg:py-3 text-sm lg:text-base backdrop-blur-sm rounded-lg transition-all"
+                  style={{ background: 'rgba(255, 255, 255, 0.7)', border: '1px solid #E0D4C8', color: '#3A2A20' }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = '#8B5E3C';
+                    e.currentTarget.style.boxShadow = '0 0 0 2px rgba(139, 94, 60, 0.1)';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = '#E0D4C8';
+                    e.currentTarget.style.boxShadow = 'none';
+                  }}
                 />
-                <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-purple-500/0 via-purple-500/5 to-purple-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity pointer-events-none"></div>
               </div>
 
               {/* Send Button */}
               <button
                 onClick={handleSendMessage}
                 disabled={!messageInput.trim() || sendingMessage}
-                className="relative group"
+                className="px-4 lg:px-6 py-2 lg:py-3 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm lg:text-base font-medium"
+                style={{ background: '#6B4A2F' }}
+                onMouseEnter={(e) => !e.currentTarget.disabled && (e.currentTarget.style.background = '#8B5E3C')}
+                onMouseLeave={(e) => !e.currentTarget.disabled && (e.currentTarget.style.background = '#6B4A2F')}
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
-                <div className="relative bg-gradient-to-r from-purple-500 to-pink-600 hover:from-pink-500 hover:to-purple-600 px-4 lg:px-6 py-2 lg:py-3 rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm lg:text-base font-medium shadow-lg">
-                  {sendingMessage ? (
-                    <div className="w-4 h-4 lg:w-5 lg:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  ) : (
-                    <span className="hidden sm:inline">Send</span>
-                  )}
-                  {!sendingMessage && (
-                    <svg className="sm:hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                    </svg>
-                  )}
-                </div>
+                {sendingMessage ? (
+                  <div className="w-4 h-4 lg:w-5 lg:h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                ) : (
+                  <span className="hidden sm:inline">Send</span>
+                )}
+                {!sendingMessage && (
+                  <svg className="sm:hidden w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                  </svg>
+                )}
               </button>
             </div>
           </div>

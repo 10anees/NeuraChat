@@ -8,6 +8,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'NeuraChat - AI-Powered Messaging',
   description: 'Modern messaging platform with AI capabilities',
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -17,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-slate-900 text-slate-50`}>
+      <body className={`${inter.className}`} style={{ background: '#F5EFEA', color: '#3A2A20' }}>
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
