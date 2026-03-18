@@ -36,7 +36,7 @@ export default function Home() {
               Company Introduction
             </p>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-5" style={{ color: '#3A2A20' }}>
-              Build Stronger Teams Through Better Conversations.
+              Connect Smarter. Connect Deeper.
             </h1>
             <p className="text-base sm:text-lg leading-relaxed mb-8" style={{ color: '#6B584A' }}>
               NeuraChat is a communication platform that combines intelligent messaging, built-in AI assistance,
