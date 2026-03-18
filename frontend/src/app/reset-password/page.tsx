@@ -2,6 +2,7 @@
 
 import { useState, useEffect, FormEvent, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import api from '@/lib/api';
 
@@ -90,21 +91,9 @@ function ResetPasswordForm() {
         {/* Logo with Glow */}
         <div className="flex justify-center mb-6 sm:mb-8">
           <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl blur-lg opacity-75 animate-pulse"></div>
-            <div className="relative w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-2xl">
-              <svg
-                className="w-12 h-12 text-white drop-shadow-lg"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
+            <div className="absolute inset-0 rounded-2xl blur-lg opacity-30" style={{ background: 'rgba(139, 94, 60, 0.2)' }}></div>
+            <div className="relative w-20 h-20 rounded-2xl overflow-hidden shadow-2xl" style={{ border: '1px solid #D1BFA7' }}>
+              <Image src="/icon.svg" alt="NeuraChat logo" fill sizes="80px" className="object-cover" priority />
             </div>
           </div>
         </div>

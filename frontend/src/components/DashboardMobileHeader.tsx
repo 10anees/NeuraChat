@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 interface DashboardMobileHeaderProps {
   isSidebarOpen: boolean;
@@ -31,9 +32,14 @@ export const DashboardMobileHeader: React.FC<DashboardMobileHeaderProps> = ({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>
-      <h1 className="text-xl font-bold flex-1" style={{ color: '#8B5E3C' }}>
-        NeuraChat
-      </h1>
+      <div className="flex-1 flex items-center gap-2 min-w-0">
+        <div className="relative w-7 h-7 rounded-md overflow-hidden flex-shrink-0" style={{ border: '1px solid #D1BFA7' }}>
+          <Image src="/icon.svg" alt="NeuraChat logo" fill sizes="28px" className="object-cover" />
+        </div>
+        <h1 className="text-xl font-bold truncate" style={{ color: '#8B5E3C' }}>
+          NeuraChat
+        </h1>
+      </div>
 
       <button
         onClick={onToggleNotifications}

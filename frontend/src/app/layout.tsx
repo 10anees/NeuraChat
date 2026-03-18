@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: 'Modern messaging platform with AI capabilities',
   icons: {
     icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
   },
 };
 

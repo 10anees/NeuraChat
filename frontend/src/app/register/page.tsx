@@ -2,6 +2,7 @@
 
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 
 export default function RegisterPage() {
@@ -46,20 +47,8 @@ export default function RegisterPage() {
         <div className="flex justify-center mb-5">
           <div className="relative">
             <div className="absolute inset-0 rounded-2xl blur-lg opacity-30" style={{ background: 'rgba(139, 94, 60, 0.2)' }}></div>
-            <div className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-2xl" style={{ background: '#8B5E3C' }}>
-              <svg
-                className="w-10 h-10 text-white drop-shadow-lg"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                />
-              </svg>
+            <div className="relative w-16 h-16 rounded-2xl overflow-hidden shadow-2xl" style={{ border: '1px solid #D1BFA7' }}>
+              <Image src="/icon.svg" alt="NeuraChat logo" fill sizes="64px" className="object-cover" priority />
             </div>
           </div>
         </div>
