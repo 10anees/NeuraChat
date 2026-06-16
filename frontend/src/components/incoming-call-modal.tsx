@@ -25,30 +25,30 @@ export const IncomingCallModal: React.FC<IncomingCallModalProps> = ({
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="relative w-full max-w-sm mx-4">
         {/* Glow Effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl blur-xl"></div>
+        <div className="absolute inset-0 rounded-2xl blur-xl" style={{ background: 'linear-gradient(to bottom right, rgba(139, 94, 60, 0.2), rgba(176, 137, 104, 0.2))' }}></div>
         
         {/* Modal */}
-        <div className="relative backdrop-blur-xl bg-gray-800/40 border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
+        <div className="relative backdrop-blur-xl rounded-2xl p-6 shadow-2xl" style={{ background: 'rgba(58, 42, 32, 0.95)', border: '1px solid rgba(139, 94, 60, 0.3)' }}>
           {/* Icon */}
-          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-full flex items-center justify-center mb-4 border border-cyan-500/30 animate-pulse">
+          <div className="mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-4 animate-pulse" style={{ background: 'linear-gradient(to bottom right, rgba(139, 94, 60, 0.2), rgba(176, 137, 104, 0.2))', border: '1px solid rgba(139, 94, 60, 0.5)' }}>
             {callType === 'video' ? (
-              <svg className="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-10 h-10" style={{ color: '#B08968' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
               </svg>
             ) : (
-              <svg className="w-10 h-10 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-10 h-10" style={{ color: '#B08968' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
             )}
           </div>
 
           {/* Title */}
-          <h2 className="text-xl font-semibold text-gray-100 mb-2 text-center">
+          <h2 className="text-xl font-semibold mb-2 text-center" style={{ color: '#F5EFEA' }}>
             Incoming {callType === 'video' ? 'Video' : 'Audio'} Call
           </h2>
 
           {/* Caller Name */}
-          <p className="text-cyan-400 mb-6 text-center text-lg font-medium">
+          <p className="mb-6 text-center text-lg font-medium" style={{ color: '#B08968' }}>
             {callerName}
           </p>
 
@@ -77,8 +77,8 @@ export const IncomingCallModal: React.FC<IncomingCallModalProps> = ({
               disabled={isProcessing}
               className="relative flex-1 group disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
-              <div className="relative bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-blue-500 hover:to-purple-600 px-4 py-3 rounded-lg transition-all duration-300 text-white font-medium shadow-lg flex items-center justify-center gap-2">
+              <div className="absolute inset-0 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity" style={{ background: 'linear-gradient(to right, #8B5E3C, #B08968)' }}></div>
+              <div className="relative px-4 py-3 rounded-lg transition-all duration-300 text-white font-medium shadow-lg flex items-center justify-center gap-2" style={{ background: 'linear-gradient(to right, #8B5E3C, #B08968)' }} onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #6B4A2F, #8B5E3C)'} onMouseLeave={(e) => e.currentTarget.style.background = 'linear-gradient(to right, #8B5E3C, #B08968)'}>
                 {isProcessing ? (
                   <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 ) : (
